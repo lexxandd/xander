@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block titulo %}Recursos para migrar{% endblock %}
+
+{% block contenido %}
+<section class="seccion-header">
+    <p class="eyebrow"># recursos</p>
+    <h1>Herramientas para dar el paso</h1>
+    <p class="subtitulo">Todo lo que necesitas para probar o instalar Linux sin complicarte.</p>
+</section>
+
+<section class="seccion">
+    <div class="tarjetas">
+        {% for r in recursos %}
+        <div class="tarjeta">
+            <h3>{{ r.titulo }}</h3>
+            <p>{{ r.texto }}</p>
+            <a href="{{ r.enlace }}" target="_blank" rel="noopener noreferrer" class="enlace-recurso">
+                {{ r.enlace_texto }} →
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="seccion seccion-alt cta-final">
+    <p>¿Te trabaste en algún paso? Pregunta en la comunidad, seguro alguien ya pasó por lo mismo.</p>
+    <a href="{{ url_for('comunidad') }}" class="boton boton-primario">Ir a la comunidad</a>
+</section>
+{% endblock %}

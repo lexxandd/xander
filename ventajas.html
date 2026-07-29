@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block titulo %}Ventajas y desventajas — migrar a Linux{% endblock %}
+
+{% block contenido %}
+<section class="seccion-header">
+    <p class="eyebrow"># comparativa</p>
+    <h1>Ventajas y desventajas</h1>
+    <p class="subtitulo">Ninguna migración es perfecta. Aquí lo bueno y lo que hay que saber antes de dar el salto.</p>
+</section>
+
+<section class="seccion">
+    <h2 class="titulo-ventaja">+ ventajas</h2>
+    <div class="tarjetas">
+        {% for v in ventajas %}
+        <div class="tarjeta tarjeta-ventaja">
+            <h3>{{ v.titulo }}</h3>
+            <p>{{ v.texto }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="seccion seccion-alt">
+    <h2 class="titulo-desventaja">- desventajas</h2>
+    <div class="tarjetas">
+        {% for d in desventajas %}
+        <div class="tarjeta tarjeta-desventaja">
+            <h3>{{ d.titulo }}</h3>
+            <p>{{ d.texto }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="seccion cta-final">
+    <p>¿Ya lo intentaste o tienes dudas? Cuéntalo en la comunidad.</p>
+    <a href="{{ url_for('comunidad') }}" class="boton boton-primario">Ir a la comunidad</a>
+</section>
+{% endblock %}

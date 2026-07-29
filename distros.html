@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block titulo %}Distros de Linux — comparativa{% endblock %}
+
+{% block contenido %}
+<section class="seccion-header">
+    <p class="eyebrow"># distros</p>
+    <h1>¿Cuál elegir?</h1>
+    <p class="subtitulo">No existe "la mejor" distro, existe la mejor para tu caso. Aquí una comparativa rápida.</p>
+</section>
+
+<section class="seccion">
+    <div class="tabla-envoltorio">
+        <table class="tabla-distros">
+            <thead>
+                <tr>
+                    <th>Distro</th>
+                    <th>Ideal para</th>
+                    <th>Basada en</th>
+                    <th>Escritorio</th>
+                    <th>Nota</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in distros %}
+                <tr>
+                    <td class="celda-nombre">{{ d.nombre }}</td>
+                    <td>{{ d.ideal_para }}</td>
+                    <td>{{ d.base }}</td>
+                    <td>{{ d.escritorio }}</td>
+                    <td>{{ d.nota }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="seccion seccion-alt cta-final">
+    <p>¿Ya probaste alguna? Comparte tu experiencia con la comunidad.</p>
+    <a href="{{ url_for('comunidad') }}" class="boton boton-primario">Ir a la comunidad</a>
+</section>
+{% endblock %}

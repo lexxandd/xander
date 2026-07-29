@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block titulo %}Nueva publicación{% endblock %}
+
+{% block contenido %}
+<section class="seccion-header">
+    <p class="eyebrow"># nueva publicación</p>
+    <h1>Comparte con la comunidad</h1>
+</section>
+
+<section class="seccion seccion-angosta">
+    <form method="POST" class="formulario">
+        <label for="categoria">Categoría</label>
+        <select id="categoria" name="categoria">
+            {% for c in categorias %}
+            <option value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="titulo">Título</label>
+        <input type="text" id="titulo" name="titulo" placeholder="ej. Cambié a Mint después de 10 años en Windows" required>
+
+        <label for="contenido">Contenido</label>
+        <textarea id="contenido" name="contenido" rows="8" placeholder="Cuenta tu experiencia, haz una pregunta o comparte un consejo..." required></textarea>
+
+        <button type="submit" class="boton boton-primario">Publicar</button>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block titulo %}~{{ usuario_perfil.nombre_usuario }}{% endblock %}
+
+{% block contenido %}
+<section class="seccion-header">
+    <p class="eyebrow"># perfil</p>
+    <div class="tarjeta-perfil">
+        <div class="avatar-grande">{{ usuario_perfil.nombre_usuario[0]|upper }}</div>
+        <div>
+            <h1>~{{ usuario_perfil.nombre_usuario }}{% if usuario_perfil.rol == 'líder' %} <span class="insignia-lider" title="Líder de la comunidad">★</span>{% endif %}</h1>
+            <p class="subtitulo-perfil">
+                miembro desde {{ usuario_perfil.creado_en[:10] }}
+                {% if usuario_perfil.distro_favorita %}
+                    · distro favorita: <strong>{{ usuario_perfil.distro_favorita }}</strong>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="seccion">
+    <p class="eyebrow"># {{ publicaciones|length }} publicaciones</p>
+    {% if publicaciones %}
+        <div class="lista-publicaciones">
+            {% for p in publicaciones %}
+            <a href="{{ url_for('ver_publicacion', publicacion_id=p.id) }}" class="publicacion-preview">
+                <span class="badge badge-{{ p.categoria|lower }}">{{ p.categoria }}</span>
+                <h3>{{ p.titulo }}</h3>
+                <p>{{ p.contenido[:160] }}{% if p.contenido|length > 160 %}…{% endif %}</p>
+                <div class="meta">
+                    <span>{{ p.creado_en[:10] }}</span>
+                    <span>♥ {{ p.total_likes }}</span>
+                    <span>{{ p.total_comentarios }} comentario{{ 's' if p.total_comentarios != 1 else '' }}</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="vacio">
+            <p>Este usuario aún no ha publicado nada.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}
