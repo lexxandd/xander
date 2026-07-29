@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}migrar --a=linux{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+</head>
+<body>
+    <header class="barra">
+        <a href="{{ url_for('inicio') }}" class="marca">
+            <span class="prompt">$</span> migrar<span class="cursor-fijo">_</span>
+        </a>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
+
+        <nav class="nav" id="navPrincipal">
+            <a href="{{ url_for('ventajas_desventajas') }}">ventajas/desventajas</a>
+            <a href="{{ url_for('distros') }}">distros</a>
+            <a href="{{ url_for('recursos') }}">recursos</a>
+            <a href="{{ url_for('comunidad') }}">comunidad</a>
+            {% if usuario %}
+                <span class="nav-usuario">~{{ usuario.nombre_usuario }}{% if usuario_es_lider %} <span class="insignia-lider" title="Líder de la comunidad">★</span>{% endif %}</span>
+                <a href="{{ url_for('logout') }}" class="nav-salir">salir</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">login</a>
+                <a href="{{ url_for('registro') }}" class="nav-cta">únete</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+        {% if mensajes %}
+            <div class="flashes">
+                {% for categoria, mensaje in mensajes %}
+                    <div class="flash flash-{{ categoria }}">{{ mensaje }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block contenido %}{% endblock %}
+    </main>
+
+    <footer class="pie">
+        <p><span class="prompt">#</span> proyecto escolar — comunidad linux — 2026</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/principal.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

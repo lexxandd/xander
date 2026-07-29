@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block titulo %}Comunidad{% endblock %}
+
+{% block contenido %}
+<section class="seccion-header seccion-header-flex">
+    <div>
+        <p class="eyebrow"># comunidad</p>
+        <h1>Publicaciones</h1>
+        <p class="subtitulo">Experiencias, dudas y testimonios de gente migrando a Linux.</p>
+    </div>
+    {% if usuario %}
+        <a href="{{ url_for('nueva_publicacion') }}" class="boton boton-primario">+ nueva publicación</a>
+    {% endif %}
+</section>
+
+<section class="seccion">
+    {% if publicaciones %}
+        <div class="lista-publicaciones">
+            {% for p in publicaciones %}
+            <a href="{{ url_for('ver_publicacion', publicacion_id=p.id) }}" class="publicacion-preview {{ 'publicacion-fijada' if p.fijado else '' }}">
+                {% if p.fijado %}<span class="badge badge-fijado">📌 fijado</span>{% endif %}
+                <span class="badge badge-{{ p.categoria|lower }}">{{ p.categoria }}</span>
+                <h3>{{ p.titulo }}</h3>
+                <p>{{ p.contenido[:160] }}{% if p.contenido|length > 160 %}…{% endif %}</p>
+                <div class="meta">
+                    <span>~{{ p.nombre_usuario }}{% if p.rol == 'líder' %} <span class="insignia-lider" title="Líder de la comunidad">★</span>{% endif %}</span>
+                    <span>{{ p.creado_en[:10] }}</span>
+                    <span>♥ {{ p.total_likes }}</span>
+                    <span>{{ p.total_comentarios }} comentario{{ 's' if p.total_comentarios != 1 else '' }}</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="vacio">
+            <p class="eyebrow"># sin resultados</p>
+            <p>Aún no hay publicaciones. Sé el primero en compartir tu experiencia con Linux.</p>
+            {% if usuario %}
+                <a href="{{ url_for('nueva_publicacion') }}" class="boton boton-primario">Crear la primera publicación</a>
+            {% else %}
+                <a href="{{ url_for('registro') }}" class="boton boton-primario">Regístrate para publicar</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

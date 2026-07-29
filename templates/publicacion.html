@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block titulo %}{{ publicacion.titulo }}{% endblock %}
+
+{% block contenido %}
+<section class="seccion seccion-angosta">
+    <a href="{{ url_for('comunidad') }}" class="volver">← volver a la comunidad</a>
+
+    <article class="publicacion-completa">
+        {% if publicacion.fijado %}<span class="badge badge-fijado">📌 fijado por un líder</span>{% endif %}
+        <span class="badge badge-{{ publicacion.categoria|lower }}">{{ publicacion.categoria }}</span>
+        <h1>{{ publicacion.titulo }}</h1>
+        <div class="meta">
+            <a href="{{ url_for('perfil', nombre_usuario=publicacion.nombre_usuario) }}">~{{ publicacion.nombre_usuario }}</a>
+            {% if publicacion.rol == 'líder' %}<span class="insignia-lider" title="Líder de la comunidad">★</span>{% endif %}
+            <span>{{ publicacion.creado_en[:16].replace('T', ' ') }}</span>
+        </div>
+        <p class="contenido-publicacion">{{ publicacion.contenido }}</p>
+
+        <div class="acciones-publicacion">
+            {% if usuario %}
+                <form method="POST" action="{{ url_for('alternar_like', publicacion_id=publicacion.id) }}" class="form-like">
+                    <button type="submit" class="boton-like {{ 'boton-like-activo' if ya_dio_like else '' }}">
+                        ♥ {{ total_likes }} me gusta
+                    </button>
+                </form>
+            {% else %}
+                <p class="meta">♥ {{ total_likes }} me gusta</p>
+            {% endif %}
+
+            {% if usuario_es_lider %}
+                <form method="POST" action="{{ url_for('alternar_fijado', publicacion_id=publicacion.id) }}">
+                    <button type="submit" class="boton-moderacion">{{ 'desfijar' if publicacion.fijado else '📌 fijar' }}</button>
+                </form>
+            {% endif %}
+
+            {% if usuario and (usuario.id == publicacion.autor_id or usuario_es_lider) %}
+                <form method="POST" action="{{ url_for('eliminar_publicacion', publicacion_id=publicacion.id) }}"
+                      onsubmit="return confirm('¿Eliminar esta publicación y todos sus comentarios?');">
+                    <button type="submit" class="boton-moderacion boton-peligro">eliminar</button>
+                </form>
+            {% endif %}
+        </div>
+    </article>
+
+    <section class="comentarios">
+        <p class="eyebrow"># {{ comentarios|length }} comentarios</p>
+
+        {% if usuario %}
+            <form method="POST" class="formulario formulario-comentario">
+                <textarea name="contenido" rows="3" placeholder="Escribe un comentario..." required></textarea>
+                <button type="submit" class="boton boton-secundario">Comentar</button>
+            </form>
+        {% else %}
+            <p class="aviso-login">
+                <a href="{{ url_for('login', next=request.path) }}">Inicia sesión</a> para comentar.
+            </p>
+        {% endif %}
+
+        <div class="lista-comentarios">
+            {% for c in comentarios %}
+            <div class="comentario">
+                <div class="meta">
+                    <span>~{{ c.nombre_usuario }}{% if c.rol == 'líder' %} <span class="insignia-lider" title="Líder de la comunidad">★</span>{% endif %}</span>
+                    <span>{{ c.creado_en[:16].replace('T', ' ') }}</span>
+                    {% if usuario and (usuario.id == c.autor_id or usuario_es_lider) %}
+                        <form method="POST" action="{{ url_for('eliminar_comentario', publicacion_id=publicacion.id, comentario_id=c.id) }}"
+                              class="form-eliminar-comentario" onsubmit="return confirm('¿Eliminar este comentario?');">
+                            <button type="submit" class="boton-moderacion boton-peligro boton-peligro-chico">eliminar</button>
+                        </form>
+                    {% endif %}
+                </div>
+                <p>{{ c.contenido }}</p>
+            </div>
+            {% else %}
+            <p class="sin-comentarios">Sé el primero en comentar.</p>
+            {% endfor %}
+        </div>
+    </section>
+</section>
+{% endblock %}

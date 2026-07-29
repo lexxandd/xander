@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block titulo %}Iniciar sesión{% endblock %}
+
+{% block contenido %}
+<section class="seccion seccion-angosta seccion-auth">
+    <p class="eyebrow"># login</p>
+    <h1>Inicia sesión</h1>
+
+    <form method="POST" class="formulario">
+        <label for="nombre_usuario">Usuario</label>
+        <input type="text" id="nombre_usuario" name="nombre_usuario" required autofocus>
+
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit" class="boton boton-primario">Entrar</button>
+    </form>
+
+    <p class="auth-alterna">¿Aún no tienes cuenta? <a href="{{ url_for('registro') }}">Regístrate</a></p>
+</section>
+{% endblock %}

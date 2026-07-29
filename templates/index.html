@@ -1,1 +1,67 @@
+{% extends "base.html" %}
+{% block titulo %}Comunidad Linux — cambia de sistema operativo{% endblock %}
 
+{% block contenido %}
+<section class="hero">
+    <div class="ventana-terminal" id="ventanaHero">
+        <div class="barra-terminal">
+            <span class="punto rojo"></span><span class="punto amarillo"></span><span class="punto verde"></span>
+            <span class="titulo-terminal">bash — 80x24</span>
+        </div>
+        <div class="cuerpo-terminal">
+            <p><span class="prompt">usuario@windows</span>:~$ <span id="lineaEscrita"></span><span class="cursor" id="cursorTerminal">_</span></p>
+        </div>
+    </div>
+
+    <h1>Sal del sistema por defecto.</h1>
+    <p class="subtitulo">
+        Una comunidad de estudiantes explorando por qué millones de personas
+        ya cambiaron a Linux — y por qué tú también podrías.
+    </p>
+    <div class="hero-botones">
+        <a href="{{ url_for('ventajas_desventajas') }}" class="boton boton-primario">Ver ventajas y desventajas</a>
+        <a href="{{ url_for('comunidad') }}" class="boton boton-secundario">Entrar a la comunidad</a>
+    </div>
+
+    <div class="stats">
+        <div><strong>{{ total_usuarios }}</strong><span># usuarios registrados</span></div>
+        <div><strong>{{ total_publicaciones }}</strong><span># publicaciones</span></div>
+        <div><strong>{{ distros|length }}+</strong><span># distros comparadas</span></div>
+    </div>
+</section>
+
+<section class="seccion">
+    <p class="eyebrow"># por qué cambiar</p>
+    <h2>Algunas razones, para empezar</h2>
+    <div class="tarjetas">
+        {% for v in ventajas %}
+        <div class="tarjeta tarjeta-ventaja">
+            <h3>{{ v.titulo }}</h3>
+            <p>{{ v.texto }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{{ url_for('ventajas_desventajas') }}" class="enlace-mas">ver lista completa, incluyendo desventajas →</a>
+</section>
+
+<section class="seccion seccion-alt">
+    <p class="eyebrow"># por dónde empezar</p>
+    <h2>Distros recomendadas</h2>
+    <div class="tarjetas">
+        {% for d in distros %}
+        <div class="tarjeta">
+            <h3>{{ d.nombre }}</h3>
+            <p class="etiqueta">ideal para: {{ d.ideal_para }}</p>
+            <p>{{ d.nota }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{{ url_for('distros') }}" class="enlace-mas">comparar todas las distros →</a>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  escribirTerminal("sudo apt install libertad-de-elegir");
+</script>
+{% endblock %}
